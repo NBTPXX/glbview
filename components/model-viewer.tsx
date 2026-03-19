@@ -4,8 +4,6 @@
 import { Suspense, useRef, useCallback, useState, useEffect } from "react"
 import { Canvas, useThree } from "@react-three/fiber"
 import { OrbitControls, Center, useGLTF, Html, useProgress } from "@react-three/drei"
-import { DRACOLoader } from "three/examples/jsm/loaders/DRACOLoader.js"
-import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js"
 import type { OrbitControls as OrbitControlsType } from "three-stdlib"
 import * as THREE from "three"
 import { Button } from "@/components/ui/button"
@@ -233,12 +231,5 @@ export const ModelViewer = () => {
     </div>
   )
 }
-
-// 配置 Draco 解码器以支持压缩模型
-const dracoLoader = new DRACOLoader()
-dracoLoader.setDecoderPath("https://www.gstatic.com/draco/versioned/decoders/1.5.6/")
-
-const gltfLoader = new GLTFLoader()
-gltfLoader.setDRACOLoader(dracoLoader)
 
 useGLTF.preload(MODEL_PATH)
