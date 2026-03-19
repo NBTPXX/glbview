@@ -22,11 +22,14 @@ const LoadingSpinner = () => {
   const { progress, active } = useProgress()
   return (
     <Html center>
-      <div className="flex flex-col items-center gap-2">
+      <div className="flex flex-col items-center gap-3">
         <div className="w-10 h-10 border-4 border-neutral-300 border-t-neutral-600 rounded-full animate-spin" />
-        <span className="text-xs text-neutral-500">
-          {active ? `${Math.round(progress)}%` : "准备中..."}
-        </span>
+        <div className="w-48 h-1.5 bg-neutral-200 rounded-full overflow-hidden">
+          <div 
+            className="h-full bg-neutral-600 rounded-full transition-all duration-200"
+            style={{ width: active ? `${progress}%` : '0%' }}
+          />
+        </div>
       </div>
     </Html>
   )
