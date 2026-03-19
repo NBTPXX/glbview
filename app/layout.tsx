@@ -36,6 +36,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head>
+        <link rel="preload" href="/models/air-force-one.glb" as="fetch" crossOrigin="anonymous" />
+      </head>
       <body className="font-sans antialiased">
         {children}
         <Analytics />
