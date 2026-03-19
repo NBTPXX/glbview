@@ -21,14 +21,14 @@ const CAMERA_VIEWS = {
 } as const
 
 const LoadingSpinner = () => {
-  const { progress } = useProgress()
+  const { progress, active } = useProgress()
   return (
     <Html center>
       <div className="flex flex-col items-center gap-2">
         <div className="w-10 h-10 border-4 border-neutral-300 border-t-neutral-600 rounded-full animate-spin" />
-        {progress > 0 && progress < 100 && (
-          <span className="text-xs text-neutral-500">{Math.round(progress)}%</span>
-        )}
+        <span className="text-xs text-neutral-500">
+          {active ? `${Math.round(progress)}%` : "准备中..."}
+        </span>
       </div>
     </Html>
   )
