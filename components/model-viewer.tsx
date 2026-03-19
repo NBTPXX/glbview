@@ -3,7 +3,9 @@
 // GLB Model Viewer - Air Force One
 import { Suspense, useRef, useCallback, useState, useEffect } from "react"
 import { Canvas, useThree } from "@react-three/fiber"
-import { OrbitControls, Center, useGLTF, Html } from "@react-three/drei"
+import { OrbitControls, Center, useGLTF, Html, useProgress } from "@react-three/drei"
+import { DRACOLoader } from "three/examples/jsm/loaders/DRACOLoader.js"
+import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js"
 import type { OrbitControls as OrbitControlsType } from "three-stdlib"
 import * as THREE from "three"
 import { Button } from "@/components/ui/button"
@@ -18,11 +20,19 @@ const CAMERA_VIEWS = {
   perspective: { position: [12, 8, 15], name: "透视图" },
 } as const
 
-const LoadingSpinner = () => (
-  <Html center>
-    <div className="w-10 h-10 border-4 border-neutral-300 border-t-neutral-600 rounded-full animate-spin" />
-  </Html>
-)
+const LoadingSpinner = () => {
+  const { progress } = useProgress()
+  return (
+    <Html center>
+      <div className="flex flex-col items-center gap-2">
+        <div className="w-10 h-10 border-4 border-neutral-300 border-t-neutral-600 rounded-full animate-spin" />
+        {progress > 0 && progress < 100 && (
+          <span className="text-xs text-neutral-500">{Math.round(progress)}%</span>
+        )}
+      </div>
+    </Html>
+  )
+}
 
 interface AirForceOneModelProps {
   onLoaded?: (box: THREE.Box3) => void
@@ -223,5 +233,12 @@ export const ModelViewer = () => {
     </div>
   )
 }
+
+// 配置 Draco 解码器以支持压缩模型
+const dracoLoader = new DRACOLoader()
+dracoLoader.setDecoderPath("https://www.gstatic.com/draco/versioned/decoders/1.5.6/")
+
+const gltfLoader = new GLTFLoader()
+gltfLoader.setDRACOLoader(dracoLoader)
 
 useGLTF.preload(MODEL_PATH)
